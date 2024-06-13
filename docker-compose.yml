@@ -1,0 +1,8 @@
+version: '3'
+services:
+  email-service:
+    image: pupa
+    ports:
+        - "8083:8083"
+    environment:
+      SPRING_KAFKA_SERVERS: 127.5.5.5:9092
