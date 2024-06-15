@@ -1,7 +1,10 @@
-FROM openjdk:22-jdk
-ARG FILE=target/shop-app-email-0.0.1-SNAPSHOT.jar
-ARG DEPENDENCY=target/original-shop-app-email-0.0.1-SNAPSHOT.jar
+FROM maven:3.9.7-eclipse-temurin-22 AS build
 WORKDIR /app
-COPY ${FILE} app.jar
-COPY ${DEPENDENCY} dop.jar
+COPY pom.xml .
+COPY src ./src/
+RUN mvn clean package
+
+FROM openjdk:22-jdk
+WORKDIR /app
+COPY --from=build /app/target/shop-app-email-0.0.1-SNAPSHOT.jar app.jar
 CMD ["java", "-jar", "app.jar"]
